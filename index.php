@@ -33,6 +33,10 @@ $quote = $query->fetch(PDO::FETCH_ASSOC);
 </head>
 
 <body>
+
+<?php require "navigation.php" ?>
+
+
     <h1>La citation du jour</h1>
 
     <div>
@@ -46,6 +50,7 @@ $quote = $query->fetch(PDO::FETCH_ASSOC);
             <figcaption>
                 <!--Ici l'auteur de la citation -->
                 <?=$quote["auteur"]?>
+                echo "<a href=liste-des-citations.php>Cliquez ici</a>"
             </figcaption>
 
         </figure>
