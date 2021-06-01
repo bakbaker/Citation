@@ -20,37 +20,28 @@ $quote = $query->fetch(PDO::FETCH_ASSOC);
 
 ?>
 
+<?php require "head.php"?>
 
-
-<!DOCTYPE html>
-<html lang="fr">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Citation du jour</title>
-</head>
 
 <body>
 
 <?php require "navigation.php" ?>
 
 
-    <h1>La citation du jour</h1>
+    <h1 class="mb-3">La citation du jour</h1>
 
-    <div>
+    <div class="alerte alert-success">
         <figure>
-            <blockquote>
+            <blockquote class=blockquote>
                 <!--Ici le texte de la citation-->
                 <?=$quote["texte"]?>
 
             </blockquote>
 
-            <figcaption>
+            <figcaption class=blockquote-footer>
                 <!--Ici l'auteur de la citation -->
                 <?=$quote["auteur"]?>
-                echo "<a href=liste-des-citations.php>Cliquez ici</a>"
+                <!--    echo "<a href=liste-des-citations.php>Cliquez ici</a>"-->
             </figcaption>
 
         </figure>
