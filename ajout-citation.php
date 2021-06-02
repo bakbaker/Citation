@@ -1,6 +1,17 @@
 <?php
+session_start();
 
 require "lib/quote-model.php";
+
+//Test d'authentification
+//seuls les utilsateurs authentifiés peuvent accéder à la page
+
+if(!isset($_SESSION["user"])){
+    header ("location:login.php");
+    exit;
+}
+
+
 //Tableau des erreurs
 $errors =[];
 

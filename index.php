@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 //Import de la bibliotheque pdo
 require "lib/quote-model.php";
 
@@ -9,12 +11,16 @@ $quote =getRandomQuote();
 <?php require "head.php"?>
 
 
-<body>
+<body class="container-fuid p-4">
 
 <?php require "navigation.php" ?>
 
 
     <h1 class="mb-3">La citation du jour</h1>
+<?php if(isset($_SESSION["user"])):?>
+<p>Bonjour admin</p>
+<?php endif?>
+
 
     <div class="alerte alert-success">
         <figure>
