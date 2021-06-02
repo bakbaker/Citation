@@ -1,45 +1,16 @@
 <?php
 
-require "lib/pdo.php";
-//On détermine si les données on été postées
-$isPosted = count($_POST) > 0;
+require "lib/quote-model.php";
+//Tableau des erreurs
+$errors =[];
 
 //On traite le formulaire si les données ont été postées
 
-if ($isPosted) {
-//On récupere la saisie
-    $text = filter_input(INPUT_POST, "texte", FILTER_SANITIZE_STRING);
-    $author = filter_input(INPUT_POST, "auteur", FILTER_SANITIZE_STRING);
+if(isPosted()) {
+    //Appel de la fonction de traitement du formulaire
+$errors = handleInsertQuoteForm();
+var_dump($errors);
 
-//Validation de la saisie
-    if (empty($text)) {
-        $errors[] = "Le texte ne peut être vide";
-    }
-    if (empty($author)) {
-        $errors[] = "L'auteur ne peut être vide";
-    }
-
-//Inseertion uniquement s'il n'y pas d'erreurs
-    if ($errors) {
-
-try {
-    //on ajoute la nouvelle citation
-            $pdo = getPDO();
-    //La requête sql
-            $sql = "INSERT INTO citations (texte, auteur) VALUES (?,?)";
-    //Préparation de la requête
-            $statement = $pdo->prepare($sql);
-    //paramètres
-            $params = [$text, $author];
-    //Execution en passant les paramètres
-            $statement->execute($params);
-    // redirection vers la liste des citations
-            header("location:liste-des-citations.php");
-            exit;
-} catch (Exception $exception) {
-    $errors[] ="Erreur interne du serveur";
-}
-}
 }
 ?>
 
@@ -52,9 +23,9 @@ try {
 
             <?php if ($errors): ?>
             <div class="alert alert-danger">
-                <?php foreach ($errors as $errorsMaessage): ?>
+                <?php foreach ($errors as $errorsMessage): ?>
                     
-                     <p><?=$errorMessage?></p>
+                     <p><?=$errorsMessage?></p>
 
                 <?php endforeach?>
             </div>
