@@ -1,54 +1,45 @@
 <?php
 //Importation de la bibliothèque perso pdo.php
 
-require "lib/pdo.php";
+require "lib/quote-model.php";
 
 //Test de la connexion
 
-$connexion = getPDO();
-//echo "ça marche <br>"; 
-
-//requ^éte SQL
-$query =$connexion->query("SELECT * FROM citations");
-//$sql = "SELECT * FROM citations";
-//$query = $connexion ->query($sql);
-
-//Récuperation de toutes les données/RÉSULTAT dans une variable
-$quoteList = $query->fetchAll(PDO::FETCH_ASSOC);
-
-//var_dump($data);
-//echo "<br>";
+$quoteList =getAllQuotes();
 
 ?>
 
 <?php require "head.php"?>
 
 
-<body>
+<body class="conatainer-fluid">
 
-<?php require "navigation.php" ?>
+    <?php require "navigation.php" ?>
 
-    <h1>Liste des citations </h1>
+    <div class="row justify-content-center"><!-- centrer horizontalement -->
+        <div class="col-lg-10 p-2"><!-- padding de 2 -->
+            <h1>Liste des citations </h1>
 
 
-    <table>
-        <tr>
-            <th>id</th>
-            <th>texte</th>
-            <th>Auteur</th>
-        </tr>
+            <table class="table-striped">
+                <tr>
+                    <th>id</th>
+                    <th>texte</th>
+                    <th>Auteur</th>
+                </tr>
 
-        <?php foreach($quoteList as $quote):?>
-            <tr>
-            <th><?=$quote["id"]?></th>
-            <th><?=$quote["texte"]?></th>
-            <th><?=$quote["auteur"]?></th>
+                <?php foreach($quoteList as $quote):?>
+                <tr>
+                    <th><?=$quote["id"]?></th>
+                    <th><?=$quote["texte"]?></th>
+                    <th><?=$quote["auteur"]?></th>
 
-        </tr>
-        <?php endforeach?>
+                </tr>
+                <?php endforeach?>
 
-    </table>
-   
+            </table>
+        </div>
+    </div>
 
 </body>
 
