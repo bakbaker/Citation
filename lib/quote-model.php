@@ -41,7 +41,7 @@ function getAllQuotes()
     $connexion = getPDO();
 //echo "ça marche <br>";
 
-//requ^éte SQL
+//requête SQL
     $query = $connexion->query("SELECT * FROM citations");
 //$sql = "SELECT * FROM citations";
     //$query = $connexion ->query($sql);
@@ -98,13 +98,24 @@ function insertQuote(array $data)
 
 }
 
+function updateQuote(array $data, int $id){
+    $pdo = getPDO();
+    $sql = "UPDATE citations SET texte=:texte, auteur=:auteur WHERE id=:id";
+    //ajout de la clef id aux paramètres
+    $statement = $pdo->prepare($sql);
+    $data["id"]=$id;
+    $statement-> execute($data);
+}
+
+
+
 /**
  * Traitement du formulaire d'ajout de citation
  *
  * @return array $errors
  */
 
-function handleInsertQuoteForm()
+function handleQuoteForm(int $id = null)
 {
     //On récupere la saisie
     //  $text = filter_input(INPUT_POST, "texte", FILTER_SANITIZE_STRING);
@@ -120,7 +131,14 @@ function handleInsertQuoteForm()
     if (count($errors) == 0) {
 
         try {
-            insertQuote($data);
+            //Ajout ou modification
+            //enfonction de la valeur de $id
+            if($id){
+                updateQuote($data, $id);
+            } else {
+              insertQuote($data);
+            }
+        
 //Redirection vers la liste des citations
             header("location:liste-des-citations.php");
             exit;
@@ -131,3 +149,57 @@ function handleInsertQuoteForm()
     return $errors;
 
 }
+
+
+/**
+ *
+ * Suppresion d'une citation dans la BD
+ *en fonction d'un argument $ID
+ *
+ * @return void
+ *
+ */
+function deleteOneQuoteById(int $id) {
+
+    //Requête sql pour la suppression
+    
+    $sql= "DELETE FROM citations WHERE id=?";
+      
+    
+    //obtention d'une instance de pdo (connexion à la bd)
+    $pdo =getPDO();
+    
+    //préparation de la requête
+    
+    $statement = $pdo->prepare($sql);
+    
+    
+    //exécution de la requête
+    //en passant le paramètre dans un tableau ordinal
+    $statement->execute([$id]);
+    
+        }
+
+        /**
+ *
+ * Retourne une citation extraite de la BD
+ * en fonction d'un id passé en argument
+ *@param int $id
+ * @return array
+ *
+ */
+function getOneQuoteById(int $id) {
+
+    $pdo = getPDO();
+    
+    $sql = "SELECT * FROM citations WHERE id=?";
+    
+    $statement = $pdo->prepare($sql);
+    
+    $statement->execute([$id]);
+    
+    //récupération des données
+    $quote = $statement->fetch(PDO::FETCH_ASSOC); 
+    
+    return ($quote);
+        }

@@ -25,4 +25,3 @@ function isPosted(){
        return count($_POST) >0;
     
 }
-?>

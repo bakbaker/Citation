@@ -19,7 +19,7 @@ $errors =[];
 
 if(isPosted()) {
     //Appel de la fonction de traitement du formulaire
-$errors = handleInsertQuoteForm();
+$errors = handleQuoteForm();
 var_dump($errors);
 
 }
