@@ -108,7 +108,6 @@ function updateQuote(array $data, int $id){
 }
 
 
-
 /**
  * Traitement du formulaire d'ajout de citation
  *
@@ -149,7 +148,6 @@ function handleQuoteForm(int $id = null)
     return $errors;
 
 }
-
 
 /**
  *

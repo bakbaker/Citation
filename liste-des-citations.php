@@ -1,4 +1,5 @@
 <?php
+session_start();
 //Importation de la bibliothèque perso pdo.php
 
 require "lib/quote-model.php";
