@@ -1,5 +1,5 @@
 <?php
-require "lib/pdo.php";
+require_once "lib/pdo.php";
 
 /**
  * Liste de tous les rôles depuis de la BD
@@ -11,7 +11,7 @@ function getAllRoles()
     $pdo = getPDO();
     $sql = "SELECT * FROM roles";
     return $pdo->query($sql)
-            ->fetchAll(PDO::FETCH_ASSOC);
+        ->fetchAll(PDO::FETCH_ASSOC);
 }
 
 function validateRegisterInput($data)
@@ -89,5 +89,69 @@ function handleRegisterForm(int $id = null)
         }
     }
     return $errors;
-
 }
+
+/**
+ * Authentification d'un utilisateur en fonction des données dans la BD
+ *
+ * @param string $login
+ * @param string $pass
+ * @return boolean
+ */
+function authenticate(string $login, string $pass):bool
+{
+    $authenticated=false;
+    $pdo = getPDO();
+//Jointure entre deux tables
+    //la clause ON indique les correspondances ou les conditions de jointures
+    $sql = "SELECT u.*, r.nom as role_utilisateur
+        FROM utilisateurs as u
+        JOIN roles as r ON u.role_id= r.id
+        WHERE (pseudo=:login OR email= :login)";
+
+    //Paramètres de la requête
+    $credentials = ["login" => $login];
+    //Preparation et exécution de la requête
+    $statement = $pdo->prepare($sql);
+    $statement->execute($credentials);
+    //Récupération du resultat de la requête
+    $user = $statement->fetch(PDO::FETCH_ASSOC);
+    //Si on a trouvé un utilisateur
+    if ($user) {
+        //On vérifie le mot de passe de l'utilisateur
+        if (password_verify($pass, $user["mot_de_passe"])) {
+            //Enregistrement de l'utilisateur dans la session
+            $_SESSION["user"] =$user;
+            $authenticated = true;
+        }
+    } 
+        return $authenticated;
+    }
+
+function isUserLogged(){
+    return isset($_SESSION["user"]);
+}
+function getUserName(){
+    return $_SESSION["user"]["pseudo"];
+}
+
+
+
+function hasFlashMessage(){
+    return isset($_SESSION["message"]);
+}
+function getFlashMessage(){
+    //Stockage du message dans une variable
+    $message =$_SESSION["message"];
+    //Supprission du message dans la session
+    unset($_SESSION["message"]);
+    //retourne le message sauvegardé
+   return $message;
+  
+}
+
+
+
+
+
+

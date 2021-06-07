@@ -3,7 +3,7 @@ session_start();
 
 //Import de la bibliotheque pdo
 require "lib/quote-model.php";
-
+require "lib/user-model.php";
 $quote =getRandomQuote();
 
 ?>
@@ -15,10 +15,19 @@ $quote =getRandomQuote();
 
 <?php require "navigation.php" ?>
 
-
     <h1 class="mb-3">La citation du jour</h1>
-<?php if(isset($_SESSION["user"])):?>
-<p>Bonjour admin</p>
+
+ <!-- Affichage du message-->
+<?php if(hasFlashMessage()):?>
+    <div class="alerte alert-primary">
+    <?= getFlashMessage()?>
+    </div>
+    <?php endif ?>
+
+
+    <!--On dit bonjour à l'utilisateur-->
+<?php if(isUserLogged()):?>
+<p>Bonjour <?=getUserName()?></p>
 <?php endif?>
 
 

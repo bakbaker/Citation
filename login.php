@@ -3,7 +3,7 @@
 //Démarre la session
 session_start();
 
-require "lib/pdo.php";
+require_once "lib/user-model.php";
 
 if (isPosted()){
 //récuperation des saisies
@@ -14,16 +14,15 @@ $data = filter_input_array(INPUT_POST,[
 ]);
 
 //Test de l'authentification
-$authenticated = $data["login"] == "admin"
-            && $data["pass"] == "123";
-}
+$authenticated = authenticate($data["login"], $data["pass"]);
+
 if ($authenticated){
     //Enregistrement dans
-    $_SESSION["user"] = "admin";
     $_SESSION["message"] = "Vous êtes authentification";
+
     header ("location:index.php");
     exit;
-
+}
 }
 ?>
 

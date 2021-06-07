@@ -1,5 +1,5 @@
 <?php
-require "lib/pdo.php";
+require_once "lib/pdo.php";
 
 /**
  * Returne une citation aléatoire extraite de la BD
